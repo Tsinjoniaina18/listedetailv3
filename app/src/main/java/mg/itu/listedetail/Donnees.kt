@@ -64,6 +64,9 @@ interface ProduitDao {
     //     fun parPrixDecroissant(): Flow<List<Produit>>
     // -----------------------------------------------------------------------
 
+    @Query("SELECT * FROM produits ORDER BY prixKg IS NULL, prixKg DESC")
+    fun parPrixDecroissant(): Flow<List<Produit>>
+
     // -----------------------------------------------------------------------
     // TODO 2 — FILTRE : les produits dont le stock dépasse un seuil donné,
     // le seuil étant un paramètre de la fonction (syntaxe :nomDuParametre).
@@ -72,6 +75,9 @@ interface ProduitDao {
     //     fun stockSuperieurA(seuilKg: Double): Flow<List<Produit>>
     // -----------------------------------------------------------------------
 
+    @Query("SELECT * FROM produits WHERE stockKg > :seuil")
+    fun stockSuperieurA(seuil: Double): Flow<List<Produit>>
+
     // -----------------------------------------------------------------------
     // TODO 3 — AGRÉGAT : le stock TOTAL de tous les produits, en une valeur.
     // Indice SQL : SELECT SUM(stockKg) FROM produits
@@ -79,6 +85,10 @@ interface ProduitDao {
     //     @Query("...")
     //     fun stockTotal(): Flow<Double?>
     // -----------------------------------------------------------------------
+
+    @Query("SELECT SUM(stockKg) FROM produits")
+    fun stockTotal(): Flow<Double?>
+
 }
 
 // ---------------------------------------------------------------------------
